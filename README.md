@@ -34,40 +34,54 @@ More details about the problem and example code can be found on [MATLAB Central]
 
 Experiment with various genetic algorithm settings and operators to improve both optimization quality and convergence speed. Document the tuning process, results, and provide an analysis of the performance improvements.
 
-## Results and Marking Criteria
+## Results
 
-### Marking Scheme
+### Run the code in the repository
 
-| Category              | Criteria                                                                                               | Score        |
-|-----------------------|-------------------------------------------------------------------------------------------------------|--------------|
-| **Program Correctness** | The program’s ability to run and its accuracy in achieving the global optimum within a specified range. | 0-50 points |
-| **Report**              | - Problem formulation: accuracy of objective function and constraints, decision variables, and ranges.<br> - Results and Discussion: Evaluation of convergence trends, statistical data, and theoretical alignment of explanations. | 0-50 points |
+Enter the folder with `main.m`. And run `main.m` (for multiple times) to see optimization results. If you want to see how I get those efficient parameters for GA (such as popNum, genNum, crossRate, mutateRate, elitismRate), run `tunerSteady.m` and `tunerDynamic.m` (it may take a LONG time). But the result data of `tunerDynamic.m` is stored in `dynamicTuningData.mat`, you can just run `dynamicHeatMapPlot` to get the heat map directly.
 
-### Expected Output
+### Main findings
 
-1. **Statistical Table**: Display best, worst, and average optimal values with their standard deviations over 10 runs.
-2. **Convergence Plot**: A plot showing the convergence trend of the objective function values across generations.
+After running the genetic algorithm (GA) optimization over 10 replicates, the following key results were observed:
 
-## Requirements
+- **Lowest Loss Achieved**: The minimum loss reached across all runs was $$ L_{\text{min}} = 5.3107 \times 10^{-6} $$
+- **Register Configuration at Lowest Loss**:
+  - $ R_1 = 5600 \Omega $, $ R_2 = 1800 \Omega $, $ R_3 = 620 \Omega $, $ R_4 = 620 \Omega $
+  - Thermistor Parameters: $ R_{N1} = 22000 \Omega $, $ \beta_1 = 4090 \, K $; $ R_{N2} = 50 \Omega $, $ \beta_2 = 2750 \, K $
 
-- **Code**: Implement a genetic algorithm without using MATLAB’s built-in GA functions.
-- **Data**: Perform optimization over 10 runs, adjusting GA parameters to optimize convergence and quality.
+- **Highest Loss**: $ L_{\text{max}} = 1.1563 \times 10^{-3} $
+- **Average Best Loss**: $ L_{\text{avg}} = 6.4287 \times 10^{-4} $
+- **Standard Deviation**: $ \sigma = 4.3536 \times 10^{-4} $
+
+### Convergence Plot
+
+The convergence of the best loss across generations averaged over 10 runs is shown in the following figure. The steady decline in loss values demonstrates the effectiveness of the GA in approaching the optimal solution.
+
+![Convergence Plot](./Results/optimalConvergence.png)
+
+### Optimal Voltage-Temperature Curve
+
+The optimal voltage-temperature curve, achieved with the best configuration, closely matches the expected curve, as shown below.
+
+![Optimal V-T Curve](./Results/OptimalVt.png)
+
+## GA Parameter Tuning
+
+Extensive parameter tuning was conducted to determine the most efficient combination of GA settings, considering:
+- **Steady-State Analysis**: Showed that the GA was largely insensitive to crossover, mutation, and elitism rates when the population size and generation count were sufficiently high.
+
+- **Dynamic-State Analysis**: Identified the optimal combination of parameters for convergence efficiency, achieving the best performance with $ \text{popNum} = 201 $, $ \text{genNum} = 151 $, and $ \text{crossRate} = \text{mutateRate} = \text{elitismRate} = 0.2 $.
+
+![The best loss values of 400 different $\zeta = (p, g)$ parameter combinations](./Results/heatMap/log2.png)
+
+(Check out `./Results/Report/main.pdf`)
 
 ## Resources
 
 - [MATLAB Genetic Algorithm Documentation](https://uk.mathworks.com/help/gads/ga.html)
 - [Optimal Component Selection MATLAB File Exchange](https://uk.mathworks.com/matlabcentral/fileexchange/35810-optimal-component-selection-using-the-mixed-integer-genetic-algorithm)
 
-## Submission Guidelines
-
-- Submit a report in PDF format titled with `UoG_ID + UESTC_ID + Name`.
-- Include the code as attachments for testing purposes.
-
-## Fine-Tuning Suggestions
-
-A minimum of 10 different GA settings should be tried. Ensure that explanations are in line with GA theory. Performance improvements are evaluated based on adherence to theory and the quality of the achieved optimizations.
-
 ---
 
 **Author**: Mark Ren  
-**Institution**: University of Glasgow
+**Institution**: University of Glasgow, UESTC

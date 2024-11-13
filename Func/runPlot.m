@@ -4,8 +4,9 @@
 % plotHandle -> The handle of the plot
 % bestBest, worstBest -> {value, [generation, run]} of the best and worst value, {2} is for finding the specific register configuration
 % avgBest, stdDev -> The average and standard deviation of the best value
+% option -> 1 to plot the graph, 0 to not plot the graph
 
-function [plotHandle, bestBest, worstBest, avgBest, stdDev] = runPlot(bestLoss, runNum)
+function [plotHandle, bestBest, worstBest, avgBest, stdDev] = runPlot(bestLoss, runNum, option)
     % Calculate the least loss in each run
     bestLossEachRun = min(bestLoss);
 
@@ -29,10 +30,13 @@ function [plotHandle, bestBest, worstBest, avgBest, stdDev] = runPlot(bestLoss, 
     stdDev = std(bestLossEachRun);
 
     % Plot
-    figure;
-    plotHandle = plot(1:runNum, bestLossEachRun, 'k*-', 'LineWidth', 2);
-    title('Optimal Loss in each run');
-    xlabel('Run');
-    ylabel('Optimal Loss');
-    grid on;
+    if option == 1
+        plotHandle = plot(1:runNum, bestLossEachRun, 'k*-', 'LineWidth', 2);
+        title('Optimal Loss in each run');
+        xlabel('Run');
+        ylabel('Optimal Loss');
+        grid on;
+    else
+        plotHandle = -1;
+    end
 end

@@ -12,16 +12,15 @@ Vdata = 1.026E-1 + -1.125E-4 * Tdata + 1.125E-5 * Tdata.^2;
 %% Main parameters
 lb = [1 1 1 1 1 1];
 ub = [70 70 70 70 9 9];
-popNum = 700;
-elitismRate = 0.8;
-crossRate = 0.9;
-mutateRate = 0.8;
-genNum = 400;
+popNum = 201;      % try 300 to get better results
+elitismRate = 0.2; % try 0.8 to get better results
+crossRate = 0.2;   % try 0.9 to get better results
+mutateRate = 0.2;  % try 0.8 to get better results
+genNum = 151;      % try 300 to get better results
 runNum = 10;
 
 %% For plotting
 gen_coor = 1:genNum;
-medianLoss = zeros(genNum, runNum);
 bestLoss = zeros(genNum, runNum);
 % store the optimal configuration information in each generation
 idxPop_best = zeros(genNum, 6, runNum);  % in index form
@@ -52,8 +51,7 @@ for runRound = 1:runNum
         % Mix elite and mutated population
         idxPop_mix = mix(elitePop, idxPop_m);
         
-        % Replace the old population with the new one
-        idxPop = idxPop_mix;
+        idxPop = idxPop_mix; % Replace the old population with the new one
     end
 end
 
@@ -61,7 +59,7 @@ end
 cvgPlot(bestLoss, genNum);
 
 %% Plot the best, worst, and average optimal objective function values and their standard deviations over 10 runs
-[~, bestBest, worstBest, avgBest, stdDev] = runPlot(bestLoss, runNum);
+[~, bestBest, worstBest, avgBest, stdDev] = runPlot(bestLoss, runNum, 1);
 
 %% Print the best, worst and average best loss
 % Find corresponding register configuration
@@ -81,7 +79,6 @@ disp(['The standard deviation is: ', num2str(stdDev)]);
 %% Plot the final best Vt curve
 % Calculate the Vt curve given the best register configuration
 Vbest = temp2volt(RegPara_best, Tdata);
-
 figure;
 plot(Tdata, Vdata, 'bo-', 'LineWidth', 2); % expected
 hold on;
@@ -91,30 +88,3 @@ ylabel('Voltage (V)');
 title('Vt Curve');
 legend('Expected', 'Optimal', 'Location', 'northwest');
 grid on;
-
-
-
-
-% Perform Vt plot animation
-% VtPlotAnime(Tdata, Vdata, RegPara_med);
-
-% plot the Vt graph of the last generation of the best and median individual
-% Vbest = temp2volt(RegPara_best(end, :, 1), Tdata);
-% Vmed = temp2volt(RegPara_med(end, :, 1), Tdata);
-
-% figure;
-% plot(Tdata, Vdata, 'bo-', 'LineWidth', 2);
-% hold on;
-% plot(Tdata, Vbest, 'r*-', 'LineWidth', 7);
-% hold on;
-% plot(Tdata, Vmed, 'go-', 'LineWidth', 2);
-% hold on;
-
-% xlabel('Temperature (C)');
-% ylabel('Voltage (V)');
-% title('Vt Curve');
-% legend('Expected', 'Median', 'Best');
-% grid on;
-
-% 应在表格中列出 10 次运行的最佳、最差和平均最佳目标函数值及其标准偏差。
-% 收敛曲线显示收敛曲线应显示每一代中 10 次运行的最佳目标函数值的平均值
